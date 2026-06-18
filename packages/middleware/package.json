@@ -1,0 +1,37 @@
+{
+  "name": "@yukikaze/middleware",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./dist/index.mjs",
+    "./package.json": "./package.json"
+  },
+  "main": "./dist/index.mjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.mts",
+  "scripts": {
+    "build": "tsdown",
+    "~dev": "tsdown --watch ./src",
+    "lint": "eslint . --max-warnings 0",
+    "check-types": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@yukikaze/lib": "workspace:*",
+    "express": "catalog:express",
+    "express-rate-limit": "catalog:express",
+    "file-type": "^21.0.0",
+    "multer": "catalog:multer",
+    "zod": "^4.2.1"
+  },
+  "devDependencies": {
+    "@repo/eslint-config": "workspace:*",
+    "@yukikaze/typescript-config": "workspace:*",
+    "@types/node": "catalog:",
+    "eslint": "catalog:",
+    "typescript": "catalog:",
+    "tsdown": "catalog:",
+    "@types/express": "catalog:express",
+    "@types/multer": "catalog:multer"
+  }
+}

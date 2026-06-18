@@ -1,0 +1,24 @@
+import type { Playlist } from "./playlist"
+import type { Song } from "./song"
+import type { Video } from "./video"
+
+export type Artist = {
+    id: string
+    name: string
+    alias: string
+    description: string
+    thumbnail: string
+    likes: number
+    totalFollow: number
+    biography: string
+    followed: boolean
+    topAlbum: Playlist
+    songs: Song[]
+    playlists: Playlist[]
+    videos: Video[]
+    recommendedArtists?: Omit<Artist, 'recommendedArtists' | 'songs' | 'topAlbum' | 'playlists' | 'videos'>[]
+}
+
+export type QueryArtist = {
+    name?: string
+}

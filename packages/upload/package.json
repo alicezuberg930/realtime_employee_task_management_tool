@@ -1,0 +1,33 @@
+{
+  "name": "@yukikaze/upload",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./dist/index.mjs",
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "build": "tsdown",
+    "~dev": "tsdown --watch ./src",
+    "lint": "eslint . --max-warnings 0",
+    "check-types": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@yukikaze/lib": "workspace:*",
+    "multer": "catalog:multer"
+  },
+  "devDependencies": {
+    "@repo/eslint-config": "workspace:*",
+    "@types/express": "catalog:express",
+    "@yukikaze/typescript-config": "workspace:*",
+    "@types/node": "catalog:",
+    "eslint": "catalog:",
+    "typescript": "catalog:",
+    "tsdown": "catalog:",
+    "@types/multer": "catalog:multer"
+  },
+  "main": "./dist/index.mjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.mts"
+}
