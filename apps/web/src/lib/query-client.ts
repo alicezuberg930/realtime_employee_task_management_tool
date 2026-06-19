@@ -1,6 +1,6 @@
 import { defaultShouldDehydrateQuery, QueryCache, QueryClient } from '@tanstack/react-query'
 import type { PersistedClient, Persister } from '@tanstack/react-query-persist-client'
-import { persistReactQueryClient, removeReactQueryClient, restoreReactQueryClient } from './indexDB'
+import { persistReactQueryClient, removeReactQueryClient, restoreReactQueryClient } from './index-db'
 import { HttpError } from './repository/http-error'
 import { toast } from '@yukikaze/ui'
 import { handleServerError } from './utils'

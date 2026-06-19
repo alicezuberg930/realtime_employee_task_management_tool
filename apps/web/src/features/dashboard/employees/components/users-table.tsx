@@ -23,7 +23,7 @@ import {
 } from '@yukikaze/ui/table'
 import { DataTablePagination, DataTableToolbar } from '@/components/data-table'
 import { roles } from '../data/data'
-import { type User } from '../data/schema'
+import { type User } from '@yukikaze/validator'
 import { DataTableBulkActions } from './data-table-bulk-actions'
 import { usersColumns as columns } from './users-columns'
 

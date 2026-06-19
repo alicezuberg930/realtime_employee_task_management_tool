@@ -1,18 +1,11 @@
 import { mutationOptions, queryOptions } from '@tanstack/react-query'
 import type {
-    Artist,
-    HomeData,
-    Playlist,
-    PlaylistType,
     Response,
-    Song,
-    SongType,
     User
 } from '@/@types'
 import { httpClient } from '../repository/http-client'
-import { getQueryClient } from '../queryClient'
-import { keys as homeKeys } from './home'
-import type { AuthValidators } from '@yukikaze/validator'
+import { getQueryClient } from '../query-client'
+import type { OTPInput, PhoneNumberInput, SignInInput, VerifyUserInput } from '@yukikaze/validator'
 
 export const keys = {
     createCode: () => ['auth', 'send', 'code'],
@@ -21,7 +14,6 @@ export const keys = {
     verify: () => ['auth', 'verify'],
     refreshToken: () => ['auth', 'refresh', 'token'],
     signIn: () => ['auth', 'signIn'],
-    signUp: () => ['auth', 'signUp'],
     signOut: () => ['auth', 'signOut'],
 } as const
 
@@ -43,10 +35,10 @@ export const authQueries = () => ({
         mutationOptions: () =>
             mutationOptions({
                 mutationKey: keys.verify(),
-                mutationFn: async ({ userId, token }: { userId: string, token: string }) => {
+                mutationFn: async ({ userId, input }: { userId: string, input: VerifyUserInput }) => {
                     return await httpClient.put<Response>(
-                        `/users/verify-email/${userId}`,
-                        { token }
+                        `/auth/verify/${userId}`,
+                        { ...input }
                     )
                 },
                 onSuccess: () => {
@@ -71,18 +63,8 @@ export const authQueries = () => ({
         mutationOptions: () =>
             mutationOptions({
                 mutationKey: keys.signIn(),
-                mutationFn: async (input: AuthValidators.SignInInput) => {
+                mutationFn: async (input: SignInInput) => {
                     return await httpClient.post<Response<{ user: User, accessToken: string }>>(`/auth/sign-in`, input)
-                },
-            }),
-    },
-
-    signUp: {
-        mutationOptions: () =>
-            mutationOptions({
-                mutationKey: keys.signUp(),
-                mutationFn: async (input: AuthValidators.SignUpInput) => {
-                    return await httpClient.post<Response>(`/auth/sign-up`, input)
                 },
             }),
     },
@@ -101,7 +83,7 @@ export const authQueries = () => ({
         mutationOptions: () =>
             mutationOptions({
                 mutationKey: keys.createCode(),
-                mutationFn: async (input: AuthValidators.PhoneNumberInput) => {
+                mutationFn: async (input: PhoneNumberInput) => {
                     return await httpClient.post<Response<{ accessCode: string }>>(
                         `/auth/create-code`,
                         { ...input }
@@ -114,7 +96,7 @@ export const authQueries = () => ({
         mutationOptions: () =>
             mutationOptions({
                 mutationKey: keys.validateCode(),
-                mutationFn: async (input: AuthValidators.OTPInput) => {
+                mutationFn: async (input: OTPInput) => {
                     return await httpClient.post<Response>(
                         `/auth/validate-code`,
                         { ...input }

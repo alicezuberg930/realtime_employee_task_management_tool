@@ -22,9 +22,7 @@ export const users = Array.from({ length: 500 }, () => {
       'suspended',
     ]),
     role: faker.helpers.arrayElement([
-      'superadmin',
-      'admin',
-      'cashier',
+      'employee',
       'manager',
     ]),
     createdAt: faker.date.past(),

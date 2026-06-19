@@ -1,5 +1,5 @@
-import { Shield, UserCheck, Users, CreditCard } from '@yukikaze/ui'
-import { type UserStatus } from './schema'
+import { UserCheck, Shield } from '@yukikaze/ui'
+import { type UserStatus } from '@yukikaze/validator'
 
 export const callTypes = new Map<UserStatus, string>([
   ['active', 'bg-teal-100/30 text-teal-900 dark:text-teal-200 border-teal-200'],
@@ -13,23 +13,13 @@ export const callTypes = new Map<UserStatus, string>([
 
 export const roles = [
   {
-    label: 'Superadmin',
-    value: 'superadmin',
-    icon: Shield,
-  },
-  {
-    label: 'Admin',
-    value: 'admin',
+    label: 'Employee',
+    value: 'employee',
     icon: UserCheck,
   },
   {
     label: 'Manager',
     value: 'manager',
-    icon: Users,
-  },
-  {
-    label: 'Cashier',
-    value: 'cashier',
-    icon: CreditCard,
+    icon: Shield,
   },
 ] as const

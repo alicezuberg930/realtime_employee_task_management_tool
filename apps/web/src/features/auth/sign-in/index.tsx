@@ -1,4 +1,3 @@
-// import { Link } from '@tanstack/react-router'
 import {
   Card,
   CardContent,
@@ -21,7 +20,7 @@ export function SignIn() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <SignInForm redirectTo={'businesses'} />
+          <SignInForm />
         </CardContent>
         <CardFooter>
           <p className='px-8 text-center text-sm text-muted-foreground'>

@@ -5,7 +5,7 @@ import { Checkbox } from '@yukikaze/ui/checkbox'
 import { DataTableColumnHeader } from '@/components/data-table'
 import { LongText } from '@/components/long-text'
 import { callTypes, roles } from '../data/data'
-import { type User } from '../data/schema'
+import { type User } from '@yukikaze/validator'
 import { DataTableRowActions } from './data-table-row-actions'
 
 export const usersColumns: ColumnDef<User>[] = [

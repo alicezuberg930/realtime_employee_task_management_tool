@@ -1,6 +1,5 @@
 import type { User } from "@/@types/user"
-import BaseProvider from "./providers/base"
-import type { AuthValidators } from "@yukikaze/validator"
+import type { SignInInput } from "@yukikaze/validator"
 
 export type ActionMapType<M extends { [index: string]: any }> = {
   [Key in keyof M]: M[Key] extends undefined ? { type: Key } : { type: Key, payload: M[Key] }
@@ -16,7 +15,7 @@ export type JWTContextType = {
   isAuthenticated: boolean
   isInitialized: boolean
   user: User | null
-  signIn: (data: AuthValidators.SignInInput) => Promise<void>
+  signIn: (data: SignInInput) => Promise<void>
   signOut: () => void
 }
 
@@ -57,15 +56,4 @@ export interface CookieOptions {
   sameSite?: 'Strict' | 'Lax' | 'None'
   secure?: boolean
   [key: string]: unknown
-}
-
-export interface AuthOptions {
-  providers: Record<string, BaseProvider>
-  cookieKeys?: {
-    token?: string
-    state?: string
-    code?: string
-    redirect?: string
-  }
-  cookieOptions?: CookieOptions
 }

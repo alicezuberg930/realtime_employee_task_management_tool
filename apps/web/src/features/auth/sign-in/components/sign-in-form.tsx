@@ -3,7 +3,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 // import { Link } from '@tanstack/react-router'
 import { Loader2, LogIn } from '@yukikaze/ui'
 import { cn } from '@yukikaze/ui'
-import { AuthValidators } from '@yukikaze/validator' 
+import { signInInput, type SignInInput } from '@yukikaze/validator' 
 import { Button } from '@yukikaze/ui/button'
 import { Field, FieldGroup } from '@yukikaze/ui/field'
 import {
@@ -14,19 +14,16 @@ import {
 import { Link } from '@tanstack/react-router'
 import { useAuthContext } from '@/lib/auth/useAuthContext'
 
-interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {
-  redirectTo?: string
-}
+type UserAuthFormProps = React.HTMLAttributes<HTMLDivElement> 
 
 export function SignInForm({
   className,
-  redirectTo,
   ...props
 }: UserAuthFormProps) {
   const { signIn } = useAuthContext()
 
-  const form = useForm<AuthValidators.SignInInput>({
-    resolver: zodResolver(AuthValidators.signInInput),
+  const form = useForm<SignInInput>({
+    resolver: zodResolver(signInInput),
     defaultValues: {
       email: '',
       password: '',
@@ -38,7 +35,7 @@ export function SignInForm({
     formState: { isSubmitting },
   } = form
 
-  const onSubmit = async (data: AuthValidators.SignInInput) => await signIn(data)
+  const onSubmit = async (values: SignInInput) => await signIn(values)
 
   return (
     <FormProvider methods={form} onSubmit={handleSubmit(onSubmit)}>

@@ -4,7 +4,7 @@ import type {
   Artist,
   QueryArtist
 } from '@/@types'
-import { getQueryClient } from '../queryClient'
+import { getQueryClient } from '../query-client'
 import { httpClient } from '../repository/http-client'
 import { keys as userKeys } from './auth'
 

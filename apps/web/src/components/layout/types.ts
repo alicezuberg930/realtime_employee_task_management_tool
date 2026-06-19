@@ -30,7 +30,6 @@ type NavGroup = {
 }
 
 type SidebarData = {
-  teams: Team[]
   navGroups: NavGroup[]
 }
 

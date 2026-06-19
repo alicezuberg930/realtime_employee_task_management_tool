@@ -6,7 +6,7 @@ import { FormProvider } from '@/components/hook-form'
 import { useNavigate } from '@tanstack/react-router'
 import { paths } from '@/lib/route/paths'
 import { RHFInputOTP } from '@/components/hook-form/RHFInputOTP'
-import { AuthValidators } from '@yukikaze/validator'
+import { otpInput, type OTPInput } from '@yukikaze/validator'
 import { useMutation } from '@tanstack/react-query'
 import { authQueries } from '@/lib/queries/auth'
 import { usePhone } from './phone-provider'
@@ -18,8 +18,8 @@ export function OtpForm({ className, ...props }: OtpFormProps) {
     const { mutateAsync } = useMutation(authQueries().validateCode.mutationOptions())
     const { phone } = usePhone()
 
-    const form = useForm<AuthValidators.OTPInput>({
-        resolver: zodResolver(AuthValidators.otpInput),
+    const form = useForm<OTPInput>({
+        resolver: zodResolver(otpInput),
         defaultValues: { accessCode: '', phone },
     })
 
@@ -28,7 +28,7 @@ export function OtpForm({ className, ...props }: OtpFormProps) {
     // eslint-disable-next-line react-hooks/incompatible-library
     const otp = watch('accessCode')
 
-    async function onSubmit(data: AuthValidators.OTPInput) {
+    async function onSubmit(data: OTPInput) {
         console.log(data)
         await mutateAsync(data, {
             onSuccess: () => {

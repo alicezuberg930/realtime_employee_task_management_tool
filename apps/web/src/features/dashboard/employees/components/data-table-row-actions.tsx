@@ -9,7 +9,7 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from '@yukikaze/ui/dropdown-menu'
-import { type User } from '../data/schema'
+import { type User } from '@yukikaze/validator'
 import { useUsers } from './users-provider'
 
 type DataTableRowActionsProps = {

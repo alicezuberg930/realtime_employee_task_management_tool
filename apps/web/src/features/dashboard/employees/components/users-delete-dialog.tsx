@@ -4,7 +4,9 @@ import { Alert, AlertDescription, AlertTitle } from '@yukikaze/ui/alert'
 import { Input } from '@yukikaze/ui/input'
 import { Label } from '@yukikaze/ui/label'
 import { ConfirmDialog } from '@/components/confirm-dialog'
-import { type User } from '../data/schema'
+import { type User } from '@yukikaze/validator'
+import { useMutation } from '@tanstack/react-query'
+import { userQueries } from '@/lib/queries/user'
 
 type UserDeleteDialogProps = {
   open: boolean
@@ -18,11 +20,15 @@ export function UsersDeleteDialog({
   currentRow,
 }: UserDeleteDialogProps) {
   const [value, setValue] = useState('')
+  const { mutateAsync } = useMutation(userQueries().delete.mutationOptions())
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     if (value.trim() !== currentRow.username) return
-
-    onOpenChange(false)
+    await mutateAsync(currentRow.id!, {
+      onSuccess() {
+        onOpenChange(false)
+      }
+    })
   }
 
   return (

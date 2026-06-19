@@ -3,7 +3,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { cn } from '@yukikaze/ui'
 import { Button } from '@yukikaze/ui/button'
 import { FormProvider, RHFTextField } from '@/components/hook-form'
-import { AuthValidators } from '@yukikaze/validator'
+import { phoneNumberInput, type PhoneNumberInput } from '@yukikaze/validator'
 import { useMutation } from '@tanstack/react-query'
 import { authQueries } from '@/lib/queries/auth'
 import { usePhone } from './phone-provider'
@@ -14,14 +14,14 @@ export function PhoneForm({ className, ...props }: PhoneFormProps) {
     const { mutateAsync } = useMutation(authQueries().createCode.mutationOptions())
     const { setStage, setPhone } = usePhone()
 
-    const form = useForm<AuthValidators.PhoneNumberInput>({
-        resolver: zodResolver(AuthValidators.phoneNumberInput),
+    const form = useForm<PhoneNumberInput>({
+        resolver: zodResolver(phoneNumberInput),
         defaultValues: { phone: '' },
     })
 
     const { handleSubmit, formState: { isSubmitting } } = form
 
-    async function onSubmit(data: AuthValidators.PhoneNumberInput) {
+    async function onSubmit(data: PhoneNumberInput) {
         setStage('verify')
         setPhone(data.phone)
         await mutateAsync(data, {

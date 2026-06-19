@@ -2,14 +2,12 @@ import { useLocales } from '../locales'
 import { useNavigate } from '@tanstack/react-router'
 import { createContext, useEffect, useReducer, useCallback, useMemo, useRef } from 'react'
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { useDispatch } from '@/redux/store'
 // types
 import type { ActionMapType, AuthStateType, JWTContextType } from './types'
 import type { User } from '@/@types'
 // utils
 import { paths } from '../route/paths'
-import type { AuthValidators } from '@yukikaze/validator'
-import { setLastTokenRefresh } from '@/redux/slices/app'
+import type { SignInInput } from '@yukikaze/validator'
 import { toast } from '@yukikaze/ui'
 import { authQueries } from '../queries/auth'
 import { jwtDecode } from './utils'
@@ -82,7 +80,6 @@ export function AuthProvider({ children }: Readonly<{ children: React.ReactNode 
   const [state, dispatch] = useReducer(reducer, initialState)
   const navigate = useNavigate()
   const refreshTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
-  const dispatchRedux = useDispatch()
   const interceptorRegisteredRef = useRef<boolean>(false)
   // tanstack query
   const { data, isError } = useQuery(authQueries().profile.queryOptions())
@@ -129,7 +126,7 @@ export function AuthProvider({ children }: Readonly<{ children: React.ReactNode 
     interceptorRegisteredRef.current = true
   }, [])
 
-  const signIn = useCallback(async (data: AuthValidators.SignInInput) => {
+  const signIn = useCallback(async (data: SignInInput) => {
     await m2(data, {
       onSuccess: (res) => {
         navigate({ to: paths.EMPLOYEE, replace: true })
@@ -154,7 +151,7 @@ export function AuthProvider({ children }: Readonly<{ children: React.ReactNode 
       onSuccess: (_res) => {
         dispatch({ type: Types.LOGOUT })
         navigate({ to: paths.SIGNIN, replace: true })
-        dispatchRedux(setLastTokenRefresh(null))
+        localStorage.set('accessTokenExpiration', null)
       },
       onError: (err) => {
         toast.error(err.message ?? translate('unknown_error'))

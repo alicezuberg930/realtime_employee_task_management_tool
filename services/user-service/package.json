@@ -15,6 +15,7 @@
     "multer": "catalog:multer"
   },
   "devDependencies": {
+    "@yukikaze/email": "workspace:*",
     "@types/multer": "catalog:multer",
     "@types/cookie-parser": "^1.4.10",
     "@types/express": "catalog:express",

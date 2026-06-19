@@ -9,7 +9,7 @@ import {
   TooltipTrigger,
 } from '@yukikaze/ui/tooltip'
 import { DataTableBulkActions as BulkActionsToolbar } from '@/components/data-table'
-import { type User } from '../data/schema'
+import { type User } from '@yukikaze/validator'
 import { UsersMultiDeleteDialog } from './users-multi-delete-dialog'
 
 type DataTableBulkActionsProps<TData> = {

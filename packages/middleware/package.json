@@ -22,7 +22,7 @@
     "express-rate-limit": "catalog:express",
     "file-type": "^21.0.0",
     "multer": "catalog:multer",
-    "zod": "^4.2.1"
+    "zod": "4.2.1"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",

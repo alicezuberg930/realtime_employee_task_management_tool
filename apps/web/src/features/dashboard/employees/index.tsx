@@ -5,14 +5,16 @@ import { UsersDialogs } from './components/users-dialogs'
 import { UsersPrimaryButtons } from './components/users-primary-buttons'
 import { UsersProvider } from './components/users-provider'
 import { UsersTable } from './components/users-table'
-import { users } from './data/users'
 import { getRouteApi } from '@tanstack/react-router'
+import { useQuery } from '@tanstack/react-query'
+import { userQueries } from '@/lib/queries/user'
 
-const route = getRouteApi('/_authenticated/users/')
+const route = getRouteApi('/dashboard/employees/')
 
 export function Employees() {
   const search = route.useSearch()
   const navigate = route.useNavigate()
+  const { data } = useQuery(userQueries().getAll.queryOptions())
 
   return (
     <UsersProvider>
@@ -32,7 +34,9 @@ export function Employees() {
           </div>
           <UsersPrimaryButtons />
         </div>
-        <UsersTable data={users} search={search} navigate={navigate} />
+        {data && (
+          <UsersTable data={data} search={search} navigate={navigate} />
+        )}
       </Main>
 
       <UsersDialogs />
