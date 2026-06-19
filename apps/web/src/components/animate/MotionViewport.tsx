@@ -1,6 +1,6 @@
 import { m, type MotionProps } from 'framer-motion';
 // hooks
-import { useIsMobile } from '@/hooks/useMobile';
+import { useIsMobile } from '@/hooks/use-mobile';
 //
 import { varContainer } from './variants';
 

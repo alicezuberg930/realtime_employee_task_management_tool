@@ -1,1 +1,0 @@
-export { bannerRouter } from './banners/banner.route'

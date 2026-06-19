@@ -1,5 +1,5 @@
 import { useLocales } from '../locales'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from '@tanstack/react-router'
 import { createContext, useEffect, useReducer, useCallback, useMemo, useRef } from 'react'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { useDispatch } from '@/redux/store'
@@ -11,7 +11,7 @@ import { paths } from '../route/paths'
 import type { AuthValidators } from '@yukikaze/validator'
 import { setLastTokenRefresh } from '@/redux/slices/app'
 import { toast } from '@yukikaze/ui'
-import { userQueries } from '../queries/user'
+import { authQueries } from '../queries/auth'
 import { jwtDecode } from './utils'
 
 enum Types {
@@ -85,11 +85,10 @@ export function AuthProvider({ children }: Readonly<{ children: React.ReactNode 
   const dispatchRedux = useDispatch()
   const interceptorRegisteredRef = useRef<boolean>(false)
   // tanstack query
-  const { data, isError } = useQuery(userQueries().profile.queryOptions())
-  const { mutateAsync: m1 } = useMutation(userQueries().refreshToken.mutationOptions())
-  const { mutateAsync: m2 } = useMutation(userQueries().signIn.mutationOptions())
-  const { mutateAsync: m3 } = useMutation(userQueries().signUp.mutationOptions())
-  const { mutateAsync: m4 } = useMutation(userQueries().signOut.mutationOptions())
+  const { data, isError } = useQuery(authQueries().profile.queryOptions())
+  const { mutateAsync: m1 } = useMutation(authQueries().refreshToken.mutationOptions())
+  const { mutateAsync: m2 } = useMutation(authQueries().signIn.mutationOptions())
+  const { mutateAsync: m4 } = useMutation(authQueries().signOut.mutationOptions())
 
   useEffect(() => {
     if (data) {
@@ -133,7 +132,7 @@ export function AuthProvider({ children }: Readonly<{ children: React.ReactNode 
   const signIn = useCallback(async (data: AuthValidators.SignInInput) => {
     await m2(data, {
       onSuccess: (res) => {
-        navigate(paths.HOME, { replace: true })
+        navigate({ to: paths.EMPLOYEE, replace: true })
         toast.success(res.message)
         const { exp } = jwtDecode(res.data?.accessToken!)
         localStorage.setItem('accessTokenExpiration', exp)
@@ -150,29 +149,11 @@ export function AuthProvider({ children }: Readonly<{ children: React.ReactNode 
     })
   }, [navigate, translate])
 
-  const signUp = useCallback(async (data: AuthValidators.SignUpInput) => {
-    await m3(data, {
-      onSuccess: (res) => {
-        dispatch({
-          type: Types.REGISTER,
-          payload: {
-            user: null
-          },
-        })
-        toast.success(res.message)
-        navigate('/sign-up', { replace: true })
-      },
-      onError: (err) => {
-        toast.error(err.message ?? translate('unknown_error'))
-      }
-    })
-  }, [navigate, translate])
-
   const signOut = useCallback(async () => {
     await m4(undefined, {
       onSuccess: (_res) => {
         dispatch({ type: Types.LOGOUT })
-        navigate(paths.HOME, { replace: true })
+        navigate({ to: paths.SIGNIN, replace: true })
         dispatchRedux(setLastTokenRefresh(null))
       },
       onError: (err) => {
@@ -180,33 +161,6 @@ export function AuthProvider({ children }: Readonly<{ children: React.ReactNode 
       }
     })
   }, [navigate, translate])
-
-  const signInWithProvider = useCallback((provider: string) => {
-    const apiUrl = import.meta.env.VITE_API_URL
-    window.location.href = `${apiUrl}/auth/provider/${provider}`
-  }, [])
-
-  // Set up axios interceptor for automatic token refresh on 401
-  // useEffect(() => {
-  //   const interceptor = axios.interceptors.response.use((response) => response,
-  //     async (error) => {
-  //       const originalRequest = error.config
-  //       if (error.response?.status === 401 && !originalRequest._retry) {
-  //         originalRequest._retry = true
-  //         try {
-  //           await refreshToken()
-  //           return axios(originalRequest)
-  //         } catch (refreshError) {
-  //           return Promise.reject(refreshError)
-  //         }
-  //       }
-  //       return Promise.reject(error)
-  //     }
-  //   )
-  //   return () => {
-  //     axios.interceptors.response.eject(interceptor)
-  //   }
-  // }, [refreshToken])
 
   // Schedule token refresh before expiration. Refreshes 20 seconds before the token expires
   const scheduleTokenRefresh = useCallback(async () => {
@@ -224,7 +178,7 @@ export function AuthProvider({ children }: Readonly<{ children: React.ReactNode 
       await m1(undefined, {
         onError(_err) {
           dispatch({ type: Types.LOGOUT })
-          navigate(paths.HOME, { replace: true })
+          navigate({ to: paths.SIGNIN, replace: true })
         },
         onSuccess(res) {
           const { exp } = jwtDecode(res.data?.accessToken!)
@@ -246,7 +200,7 @@ export function AuthProvider({ children }: Readonly<{ children: React.ReactNode 
         onError(_err) {
           // If refresh fails, log out the user
           dispatch({ type: Types.LOGOUT })
-          navigate(paths.HOME, { replace: true })
+          navigate({ to: paths.SIGNIN, replace: true })
         },
         onSuccess(res) {
           const { exp } = jwtDecode(res.data?.accessToken!)
@@ -278,10 +232,8 @@ export function AuthProvider({ children }: Readonly<{ children: React.ReactNode 
     isAuthenticated: state.isAuthenticated,
     user: state.user,
     signIn,
-    signUp,
     signOut,
-    signInWithProvider,
-  }), [state, signIn, signUp, signOut, signInWithProvider])
+  }), [state, signIn, signOut])
 
   return <AuthContext.Provider value={memoizedValue}>{children}</AuthContext.Provider>
 }

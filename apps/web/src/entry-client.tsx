@@ -12,13 +12,10 @@ import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client
 import { getQueryClient, createIDBPersister } from './lib/queryClient.ts'
 // theme provider
 import { ThemeProvider } from '@yukikaze/ui'
-// snackbar
-import { Toaster } from '@yukikaze/ui/sonner'
 // 
 import { StrictMode } from 'react'
 import { hydrateRoot } from 'react-dom/client'
 import App from './App.tsx'
-import { BrowserRouter } from 'react-router-dom'
 
 hydrateRoot(document.getElementById('root') as HTMLElement,
   <StrictMode>
@@ -37,12 +34,7 @@ hydrateRoot(document.getElementById('root') as HTMLElement,
       >
         <ReduxProvider store={store}>
           <PersistGate loading={null} persistor={persistor}>
-            <BrowserRouter>
-              <AuthProvider>
-                <App />
-                <Toaster />
-              </AuthProvider>
-            </BrowserRouter>
+            <App />
           </PersistGate>
         </ReduxProvider>
       </ThemeProvider>

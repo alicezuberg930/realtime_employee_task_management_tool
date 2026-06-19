@@ -1,8 +1,8 @@
 import express, { Request, Response } from 'express'
-import cookieParser from "cookie-parser"
+import cookieParser from 'cookie-parser'
 import { env } from '@yukikaze/lib/create-env'
 import { errorInterceptor, notFoundHandlerMiddleware, responseInterceptor } from '@yukikaze/middleware'
-import { localAuthRoute, oauthAuthRoute } from './modules'
+import { localAuthRoute } from './modules'
 const app = express()
 
 app.set('trust proxy', 1);
@@ -21,11 +21,11 @@ app.use(express.json({ limit: '21mb' }))
 const port = env.AUTH_SERVICE_PORT
 
 app.get('/check', (_: Request, res: Response) => {
-    res.json({ message: 'Welcome to YukikazeMP3 Express Server!' })
+    res.json({ message: 'Welcome to my Express Server!' })
 })
 
 // map routers to express server
-app.use('/', [localAuthRoute, oauthAuthRoute])
+app.use('/', [localAuthRoute])
 
 // assign global middlewares to express server
 app.use([notFoundHandlerMiddleware, errorInterceptor])

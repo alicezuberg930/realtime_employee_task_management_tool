@@ -17,10 +17,7 @@ export type JWTContextType = {
   isInitialized: boolean
   user: User | null
   signIn: (data: AuthValidators.SignInInput) => Promise<void>
-  signUp: (data: AuthValidators.SignUpInput) => Promise<void>
   signOut: () => void
-  signInWithProvider: (provider: string) => void
-  // refreshToken: () => Promise<void>
 }
 
 export type GoogleUserResponse = {

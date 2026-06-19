@@ -6,7 +6,7 @@ import type {
 } from '@/@types'
 import { getQueryClient } from '../queryClient'
 import { httpClient } from '../repository/http-client'
-import { keys as userKeys } from './user'
+import { keys as userKeys } from './auth'
 
 export const keys = {
   all: (opts: QueryArtist) => ['artists', opts],

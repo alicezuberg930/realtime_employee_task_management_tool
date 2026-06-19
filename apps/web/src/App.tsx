@@ -1,5 +1,14 @@
-import Router from "./lib/route"
+import { createRouter, RouterProvider } from "@tanstack/react-router"
+import { routeTree } from './routeTree.gen'
+import { getQueryClient } from "./lib/queryClient"
+
+export const router = createRouter({
+  routeTree,
+  context: { queryClient: getQueryClient() },
+  defaultPreload: 'intent',
+  defaultPreloadStaleTime: 0,
+})
 
 export default function App() {
-  return <Router />
+  return <RouterProvider router={router} />
 }

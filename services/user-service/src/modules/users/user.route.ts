@@ -38,34 +38,4 @@ userRouter.put("/verify-email/:id",
     (request: Request<{ id: string }, {}, {}, { token: string }>, response: Response) => userController.verifyEmail(request, response)
 )
 
-userRouter.get("/song/list",
-    JWTMiddleware,
-    (request: Request<{}, {}, {}, { type: 'uploaded' | 'favorite' }>, response: Response) => userController.userSongs(request, response)
-)
-
-userRouter.get("/playlist/list",
-    JWTMiddleware,
-    (request: Request<{}, {}, {}, { type: 'created' | 'favorite' }>, response: Response) => userController.userPlaylists(request, response)
-)
-
-userRouter.get("/artist/list",
-    JWTMiddleware,
-    (request: Request, response: Response) => userController.userArtists(request, response)
-)
-
-userRouter.put('/favorite/song/:id',
-    JWTMiddleware,
-    (request: Request<{ id: string }>, response: Response) => userController.toggleFavoriteSong(request, response)
-)
-
-userRouter.put('/favorite/playlist/:id',
-    JWTMiddleware,
-    (request: Request<{ id: string }>, response: Response) => userController.toggleFavoritePlaylist(request, response)
-)
-
-userRouter.put("/follow/artist/:id",
-    JWTMiddleware,
-    (request: Request<{ id: string }>, response: Response) => userController.toggleFollowArtist(request, response)
-)
-
 export { userRouter }
